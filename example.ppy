@@ -1,0 +1,4 @@
+x = Prawda
+
+jeśli x jest Prawdą:
+    wypisz(x)
