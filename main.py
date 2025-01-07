@@ -19,5 +19,4 @@ def parse_polish_python(file_path):
 
 if __name__ == "__main__":
     code = parse_polish_python("example.ppy")
-    print("---- WYG wygenerowany kod python ----")
     print(code)

@@ -1,4 +1,3 @@
-x = Prawda
-
-jeśli x jest Prawdą:
-    wypisz(x)
+liczba = 10
+suma = 0
+maksimum = 0
