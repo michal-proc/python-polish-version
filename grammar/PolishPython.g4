@@ -4,8 +4,14 @@ grammar PolishPython;
 // Lexer Rules
 // ---------------------
 
-// Whitespaces - skip as default
-WS: [ \t\r\n]+ -> skip;
+// Whitespaces
+NEWLINE: [\n]+;
+WS_AFTER_NEWLINE: NEWLINE [ \t]+;
+WS_TO_SKIP: [ \r]+ -> skip;
+
+// Comments
+LINE_COMMENT: '#' ~[\r\n]*;
+BLOCK_COMMENT: '/*' .*? '*/';
 
 // Symbols
 EQUAL: '=';
@@ -25,8 +31,8 @@ LE: '<=';
 GE: '>=';
 EQ: '==';
 NEQ: '!=';
-AND: 'i';       // 'i' dla 'AND'
-OR: 'lub';      // 'lub' dla 'OR'
+AND: 'i';
+OR: 'lub';
 NOT: 'nie';
 
 // Python keyword translations
@@ -128,8 +134,10 @@ TYPE: 'typ';
 VARS: 'zmienne';
 ZIP: 'sparuj';
 
-// Liczby i identyfikatory
+// Identifiers
 NUMBER: [0-9]+;
+STRING: '"' ( ~["\\] | '\\' . )* '"' | '\'' ( ~['\\] | '\\' . )* '\'';
+FSTRING: 'f' '"' ( ~["\\] | '\\' . )* '"' | 'f' '\'' ( ~['\\] | '\\' . )* '\'';
 IDENTIFIER: [a-zA-Z_][a-zA-Z0-9_]*;
 
 // ---------------------
@@ -152,32 +160,49 @@ statement
     | built_in_func_call
     | expression_statement
     | pass_statement
+    | ws
+    | comment
     ;
 
 assignment
-    : IDENTIFIER EQUAL expression
+    : identifier_with_built_in EQUAL expression
+    ;
+
+identifier_with_built_in
+    : IDENTIFIER
+    | built_in_func_name
     ;
 
 if_statement
-    : IF expression IS expr_after_is COLON statement_block
-      (ELIF expression IS expr_after_is COLON statement_block)*
+    : IF expression second_part_statement? COLON statement_block
+      (ELIF expression second_part_statement? COLON statement_block)*
       (ELSE COLON statement_block)?
     ;
 
 while_statement
-    : WHILE expression IS expr_after_is COLON statement_block
+    : WHILE expression second_part_statement? COLON statement_block
     ;
 
 for_statement
-    : FOR IDENTIFIER IN expression COLON statement_block
+    : FOR parameter_list IN expression COLON statement_block
+    ;
+
+second_part_statement
+    : IS expr_after_is
+    | EQUAL expression
+    | LT expression
+    | GT expression
+    | LE expression
+    | GE expression
+    | NEQ expression
     ;
 
 function_def
-    : DEF IDENTIFIER LPAREN parameter_list? RPAREN COLON statement_block
+    : DEF identifier_with_built_in LPAREN parameter_list? RPAREN COLON statement_block
     ;
 
 parameter_list
-    : IDENTIFIER (COMMA IDENTIFIER)*
+    : identifier_with_built_in (COMMA identifier_with_built_in)*
     ;
 
 return_statement
@@ -302,8 +327,10 @@ bool_expr_var
     ;
 
 expr_after_is
-    : IDENTIFIER
+    : identifier_with_built_in
     | NUMBER
+    | STRING
+    | FSTRING
     | bool_expr_var
     ;
 
@@ -347,7 +374,19 @@ unary_expr
 primary_expr
     : built_in_func_call
     | LPAREN expression RPAREN
-    | IDENTIFIER
+    | identifier_with_built_in
     | NUMBER
+    | STRING
+    | FSTRING
     | bool_expr
+    ;
+
+ws
+    : NEWLINE
+    | WS_AFTER_NEWLINE
+    ;
+
+comment
+    : LINE_COMMENT
+    | BLOCK_COMMENT
     ;

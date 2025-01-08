@@ -1,3 +1,30 @@
+# Inicjalizacja zmiennych
 liczba = 10
 suma = 0
 maksimum = 0
+
+
+
+# Definicja funkcji
+definiuj znajdz_maksimum(lista):
+    maksimum = 0
+    dla element w lista:
+        jeśli element > maksimum:
+            maksimum = element
+    zwróć maksimum
+
+jeśli liczba > 10:
+    wypisz("Liczba jest większa niż 10")
+jeśli_inaczej liczba == 10:
+    wypisz(f"Liczba wynosi dokładnie 10")
+inaczej:
+    wypisz("Liczba jest mniejsza niż 10")
+
+jeśli Prawda jest Prawdą:
+    pomiń
+
+dopóki liczba >= 0:
+    liczba = liczba - 1
+
+dla x w zakres(5):
+    wypisz(x)

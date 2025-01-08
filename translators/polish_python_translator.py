@@ -7,92 +7,101 @@ from translations.builtin_functions import BUILTIN_FUNCTIONS
 
 class PolishPythonTranslator(PolishPythonVisitor):
 
-    def __init__(self):
-        self.indent_level = 0
-
     def visitProgram(self, ctx: PolishPythonParser.ProgramContext):
         output_lines = []
         for statement in ctx.statement():
             translated = self.visit(statement)
             if translated:
                 output_lines.append(translated)
-        return "\n".join(output_lines)
-
-    def indent(self):
-        return "    " * self.indent_level
+        return "".join(output_lines)
 
     def visitAssignment(self, ctx: PolishPythonParser.AssignmentContext):
-        var_name = ctx.IDENTIFIER().getText()
+        var_name = ctx.identifier_with_built_in().getText()
         value = self.visit(ctx.expression())
-        return f"{self.indent()}{var_name} = {value}"
+        return f"{var_name} = {value}"
+
+    def visitIdentifier_with_built_in(self, ctx: PolishPythonParser.Identifier_with_built_inContext):
+        return ctx.getText()
 
     def visitIf_statement(self, ctx: PolishPythonParser.If_statementContext):
         code = ""
+        # Main `if` block
         condition = self.visit(ctx.expression(0))
-        condition_right = self.visit(ctx.expr_after_is(0))
-        code += f"{self.indent()}if {condition} == {condition_right}:\n"
-        self.indent_level += 1
+        if ctx.second_part_statement(0):
+            condition += f" {self.visit(ctx.second_part_statement(0))}"
+        code += f"if {condition}:"
         code += self.visit(ctx.statement_block(0))
-        self.indent_level -= 1
 
+        # Handle `elif` blocks
         elif_count = len(ctx.ELIF())
         for i in range(elif_count):
             condition = self.visit(ctx.expression(i + 1))
-            condition_right = self.visit(ctx.expr_after_is(i + 1))
-            code += f"\n{self.indent()}elif {condition} == {condition_right}:\n"
-            self.indent_level += 1
+            if ctx.second_part_statement(i + 1):
+                condition += f" {self.visit(ctx.second_part_statement(i + 1))}"
+            code += f"elif {condition}:"
             code += self.visit(ctx.statement_block(i + 1))
-            self.indent_level -= 1
 
+        # Handle `else` block
         if ctx.ELSE():
             else_block = ctx.statement_block(1 + elif_count)
-            code += f"\n{self.indent()}else:\n"
-            self.indent_level += 1
+            code += f"else:"
             code += self.visit(else_block)
-            self.indent_level -= 1
 
         return code
 
     def visitWhile_statement(self, ctx: PolishPythonParser.While_statementContext):
-        condition_left = self.visit(ctx.expression())
-        condition_right = self.visit(ctx.expr_after_is())
-        code = f"{self.indent()}while {condition_left} == {condition_right}:\n"
-        self.indent_level += 1
+        # Parse the while condition
+        condition = self.visit(ctx.expression())
+        if ctx.second_part_statement():
+            condition += f" {self.visit(ctx.second_part_statement())}"
+        code = f"while {condition}:"
         code += self.visit(ctx.statement_block())
-        self.indent_level -= 1
         return code
 
     def visitFor_statement(self, ctx: PolishPythonParser.For_statementContext):
-        var = ctx.IDENTIFIER().getText()
+        # Parse the parameters in the for loop
+        parameters = ", ".join([param.getText() for param in ctx.parameter_list().identifier_with_built_in()])
         iterable = self.visit(ctx.expression())
-        code = f"{self.indent()}for {var} in {iterable}:\n"
-        self.indent_level += 1
+        code = f"for {parameters} in {iterable}:"
         code += self.visit(ctx.statement_block())
-        self.indent_level -= 1
         return code
 
+    def visitSecond_part_statement(self, ctx: PolishPythonParser.Second_part_statementContext):
+        if ctx.IS():
+            return f"== {self.visit(ctx.expr_after_is())}"
+        elif ctx.EQUAL():
+            return f"= {self.visit(ctx.expression())}"
+        elif ctx.LT():
+            return f"< {self.visit(ctx.expression())}"
+        elif ctx.GT():
+            return f"> {self.visit(ctx.expression())}"
+        elif ctx.LE():
+            return f"<= {self.visit(ctx.expression())}"
+        elif ctx.GE():
+            return f">= {self.visit(ctx.expression())}"
+        elif ctx.NEQ():
+            return f"!= {self.visit(ctx.expression())}"
+
     def visitFunction_def(self, ctx: PolishPythonParser.Function_defContext):
-        func_name = ctx.IDENTIFIER().getText()
-        params = ctx.parameter_list().IDENTIFIER()
+        func_name = ctx.identifier_with_built_in().getText()
+        params = ctx.parameter_list().identifier_with_built_in()
         param_names = ", ".join([param.getText() for param in params]) if params else ""
-        code = f"{self.indent()}def {func_name}({param_names}):\n"
-        self.indent_level += 1
+        code = f"def {func_name}({param_names}):"
         code += self.visit(ctx.statement_block())
-        self.indent_level -= 1
         return code
 
     def visitReturn_statement(self, ctx: PolishPythonParser.Return_statementContext):
         value = self.visit(ctx.expression())
-        return f"{self.indent()}return {value}"
+        return f"return {value}"
 
     def visitBreak_statement(self, ctx: PolishPythonParser.Break_statementContext):
-        return f"{self.indent()}break"
+        return f"break"
 
     def visitContinue_statement(self, ctx: PolishPythonParser.Continue_statementContext):
-        return f"{self.indent()}continue"
+        return f"continue"
 
     def visitPass_statement(self, ctx: PolishPythonParser.Pass_statementContext):
-        return f"{self.indent()}pass"
+        return f"pass"
 
     def visitBuilt_in_func_call(self, ctx: PolishPythonParser.Built_in_func_callContext):
         func_name = self.visit(ctx.built_in_func_name())
@@ -101,7 +110,7 @@ class PolishPythonTranslator(PolishPythonVisitor):
             args_str = ", ".join(args)
         else:
             args_str = ""
-        return f"{self.indent()}{func_name}({args_str})"
+        return f"{func_name}({args_str})"
 
     def visitBuilt_in_func_name(self, ctx: PolishPythonParser.Built_in_func_nameContext):
         built_in_text = ctx.getText()
@@ -109,7 +118,7 @@ class PolishPythonTranslator(PolishPythonVisitor):
 
     def visitExpression_statement(self, ctx: PolishPythonParser.Expression_statementContext):
         expr = self.visit(ctx.expression())
-        return f"{self.indent()}{expr}"
+        return f"{expr}"
 
     def visitStatement_block(self, ctx: PolishPythonParser.Statement_blockContext):
         lines = []
@@ -117,7 +126,7 @@ class PolishPythonTranslator(PolishPythonVisitor):
             translated = self.visit(statement)
             if translated:
                 lines.append(translated)
-        return "\n".join(lines)
+        return "".join(lines)
 
     def visitBool_expr(self, ctx: PolishPythonParser.Bool_exprContext):
         bool_text = ctx.getText()
@@ -128,8 +137,8 @@ class PolishPythonTranslator(PolishPythonVisitor):
         return BOOL_VAR.get(bool_text, bool_text)
 
     def visitExpr_after_is(self, ctx: PolishPythonParser.Expr_after_isContext):
-        if ctx.IDENTIFIER():
-            return ctx.IDENTIFIER().getText()
+        if ctx.identifier_with_built_in():
+            return ctx.identifier_with_built_in().getText()
         elif ctx.NUMBER():
             return ctx.NUMBER().getText()
         else:
@@ -207,11 +216,21 @@ class PolishPythonTranslator(PolishPythonVisitor):
             return self.visit(ctx.built_in_func_call())
         elif ctx.expression():
             return f"({self.visit(ctx.expression())})"
-        elif ctx.IDENTIFIER():
-            return ctx.IDENTIFIER().getText()
+        elif ctx.identifier_with_built_in():
+            return ctx.identifier_with_built_in().getText()
         elif ctx.NUMBER():
             return ctx.NUMBER().getText()
+        elif ctx.STRING():
+            return ctx.STRING().getText()
+        elif ctx.FSTRING():
+            return ctx.FSTRING().getText()
         elif ctx.bool_expr():
             return self.visit(ctx.bool_expr())
-        else:
-            return ""
+        return ""
+
+    def visitWs(self, ctx):
+        return ctx.getText()
+
+    def visitComment(self, ctx):
+        comment_text = ctx.getText()
+        return f"{comment_text.strip()}"

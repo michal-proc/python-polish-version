@@ -24,6 +24,11 @@ class PolishPythonVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by PolishPythonParser#identifier_with_built_in.
+    def visitIdentifier_with_built_in(self, ctx:PolishPythonParser.Identifier_with_built_inContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by PolishPythonParser#if_statement.
     def visitIf_statement(self, ctx:PolishPythonParser.If_statementContext):
         return self.visitChildren(ctx)
@@ -36,6 +41,11 @@ class PolishPythonVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by PolishPythonParser#for_statement.
     def visitFor_statement(self, ctx:PolishPythonParser.For_statementContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by PolishPythonParser#second_part_statement.
+    def visitSecond_part_statement(self, ctx:PolishPythonParser.Second_part_statementContext):
         return self.visitChildren(ctx)
 
 
@@ -156,6 +166,16 @@ class PolishPythonVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by PolishPythonParser#primary_expr.
     def visitPrimary_expr(self, ctx:PolishPythonParser.Primary_exprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by PolishPythonParser#ws.
+    def visitWs(self, ctx:PolishPythonParser.WsContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by PolishPythonParser#comment.
+    def visitComment(self, ctx:PolishPythonParser.CommentContext):
         return self.visitChildren(ctx)
 
 

@@ -35,6 +35,15 @@ class PolishPythonListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by PolishPythonParser#identifier_with_built_in.
+    def enterIdentifier_with_built_in(self, ctx:PolishPythonParser.Identifier_with_built_inContext):
+        pass
+
+    # Exit a parse tree produced by PolishPythonParser#identifier_with_built_in.
+    def exitIdentifier_with_built_in(self, ctx:PolishPythonParser.Identifier_with_built_inContext):
+        pass
+
+
     # Enter a parse tree produced by PolishPythonParser#if_statement.
     def enterIf_statement(self, ctx:PolishPythonParser.If_statementContext):
         pass
@@ -59,6 +68,15 @@ class PolishPythonListener(ParseTreeListener):
 
     # Exit a parse tree produced by PolishPythonParser#for_statement.
     def exitFor_statement(self, ctx:PolishPythonParser.For_statementContext):
+        pass
+
+
+    # Enter a parse tree produced by PolishPythonParser#second_part_statement.
+    def enterSecond_part_statement(self, ctx:PolishPythonParser.Second_part_statementContext):
+        pass
+
+    # Exit a parse tree produced by PolishPythonParser#second_part_statement.
+    def exitSecond_part_statement(self, ctx:PolishPythonParser.Second_part_statementContext):
         pass
 
 
@@ -275,6 +293,24 @@ class PolishPythonListener(ParseTreeListener):
 
     # Exit a parse tree produced by PolishPythonParser#primary_expr.
     def exitPrimary_expr(self, ctx:PolishPythonParser.Primary_exprContext):
+        pass
+
+
+    # Enter a parse tree produced by PolishPythonParser#ws.
+    def enterWs(self, ctx:PolishPythonParser.WsContext):
+        pass
+
+    # Exit a parse tree produced by PolishPythonParser#ws.
+    def exitWs(self, ctx:PolishPythonParser.WsContext):
+        pass
+
+
+    # Enter a parse tree produced by PolishPythonParser#comment.
+    def enterComment(self, ctx:PolishPythonParser.CommentContext):
+        pass
+
+    # Exit a parse tree produced by PolishPythonParser#comment.
+    def exitComment(self, ctx:PolishPythonParser.CommentContext):
         pass
 
 
