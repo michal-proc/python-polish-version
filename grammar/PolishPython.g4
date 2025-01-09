@@ -17,8 +17,13 @@ BLOCK_COMMENT: '/*' .*? '*/';
 EQUAL: '=';
 COLON: ':';
 COMMA: ',';
+DOT: '.';
 LPAREN: '(';
 RPAREN: ')';
+LBRACK: '[';
+RBRACK: ']';
+LBRACE: '{';
+RBRACE: '}';
 PLUS: '+';
 MINUS: '-';
 MULT: '*';
@@ -31,9 +36,7 @@ LE: '<=';
 GE: '>=';
 EQ: '==';
 NEQ: '!=';
-AND: 'i';
-OR: 'lub';
-NOT: 'nie';
+ARROW: '->';
 
 // Python keyword translations
 IF: 'jeśli';
@@ -44,10 +47,18 @@ FOR: 'dla';
 IN: 'w';
 IS: 'jest';
 DEF: 'definiuj';
+DEL: 'usuń';
 RETURN: 'zwróć';
 BREAK: 'przerwij';
 CONTINUE: 'kontynuuj';
 PASS: 'pomiń';
+IMPORT: 'sprowadź';
+FROM: 'z';
+AS: 'jako';
+YIELD: 'generuj';
+AND: 'i';
+OR: 'lub';
+NOT: 'nie';
 
 TRUE: 'Prawda';
 FALSE: 'Fałsz';
@@ -82,7 +93,7 @@ DICT: 'słownik';
 DIR: 'katalog';
 DIVMOD: 'iloraz_i_reszta';
 ENUMERATE: 'wylicz';
-EVAL: 'ocen';
+EVAL: 'oceń';
 EXEC: 'wykonaj';
 EXIT: 'wyjdź';
 FILTER: 'filtruj';
@@ -135,7 +146,7 @@ VARS: 'zmienne';
 ZIP: 'sparuj';
 
 // Identifiers
-NUMBER: [0-9]+;
+NUMBER: '-'? [0-9]+ ('.' [0-9]+)? ([eE][+-]?[0-9]+)? | '0b' [01]+ | '0o' [0-7]+ | '0x' [0-9a-fA-F]+;
 STRING: '"' ( ~["\\] | '\\' . )* '"' | '\'' ( ~['\\] | '\\' . )* '\'';
 FSTRING: 'f' '"' ( ~["\\] | '\\' . )* '"' | 'f' '\'' ( ~['\\] | '\\' . )* '\'';
 IDENTIFIER: [a-zA-Z_][a-zA-Z0-9_]*;
@@ -153,8 +164,10 @@ statement
     | if_statement
     | while_statement
     | for_statement
+    | import_statement
     | function_def
     | return_statement
+    | yield_statement
     | break_statement
     | continue_statement
     | built_in_func_call
@@ -187,6 +200,35 @@ for_statement
     : FOR parameter_list IN expression COLON statement_block
     ;
 
+import_statement
+    : import_direct
+    | import_from
+    ;
+
+import_direct
+    : IMPORT import_spec (COMMA import_spec)*
+    ;
+
+import_from
+    : FROM import_statement_after_from IMPORT import_spec (COMMA import_spec)*
+    ;
+
+import_statement_after_from
+    : dotted_name
+    ;
+
+import_spec
+    : dotted_name (AS alias_name)?
+    ;
+
+dotted_name
+    : IDENTIFIER (DOT IDENTIFIER)*
+    ;
+
+alias_name
+    : IDENTIFIER
+    ;
+
 second_part_statement
     : IS expr_after_is
     | EQUAL expression
@@ -207,6 +249,10 @@ parameter_list
 
 return_statement
     : RETURN expression
+    ;
+
+yield_statement
+    : YIELD expression
     ;
 
 break_statement
@@ -379,6 +425,20 @@ primary_expr
     | STRING
     | FSTRING
     | bool_expr
+    | list_literal
+    | dict_literal
+    ;
+
+list_literal
+    : (LBRACK | LPAREN) (ws)* (expression (ws)* (COMMA expression)*)? (ws)* (RBRACK | RPAREN)
+    ;
+
+dict_literal
+    : LBRACE (ws)* (dict_entry ((ws)* COMMA dict_entry)*)? (ws)* RBRACE
+    ;
+
+dict_entry
+    : expression COLON expression
     ;
 
 ws

@@ -44,6 +44,41 @@ class PolishPythonVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by PolishPythonParser#import_statement.
+    def visitImport_statement(self, ctx:PolishPythonParser.Import_statementContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by PolishPythonParser#import_direct.
+    def visitImport_direct(self, ctx:PolishPythonParser.Import_directContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by PolishPythonParser#import_from.
+    def visitImport_from(self, ctx:PolishPythonParser.Import_fromContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by PolishPythonParser#import_statement_after_from.
+    def visitImport_statement_after_from(self, ctx:PolishPythonParser.Import_statement_after_fromContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by PolishPythonParser#import_spec.
+    def visitImport_spec(self, ctx:PolishPythonParser.Import_specContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by PolishPythonParser#dotted_name.
+    def visitDotted_name(self, ctx:PolishPythonParser.Dotted_nameContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by PolishPythonParser#alias_name.
+    def visitAlias_name(self, ctx:PolishPythonParser.Alias_nameContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by PolishPythonParser#second_part_statement.
     def visitSecond_part_statement(self, ctx:PolishPythonParser.Second_part_statementContext):
         return self.visitChildren(ctx)
@@ -61,6 +96,11 @@ class PolishPythonVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by PolishPythonParser#return_statement.
     def visitReturn_statement(self, ctx:PolishPythonParser.Return_statementContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by PolishPythonParser#yield_statement.
+    def visitYield_statement(self, ctx:PolishPythonParser.Yield_statementContext):
         return self.visitChildren(ctx)
 
 
@@ -166,6 +206,21 @@ class PolishPythonVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by PolishPythonParser#primary_expr.
     def visitPrimary_expr(self, ctx:PolishPythonParser.Primary_exprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by PolishPythonParser#list_literal.
+    def visitList_literal(self, ctx:PolishPythonParser.List_literalContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by PolishPythonParser#dict_literal.
+    def visitDict_literal(self, ctx:PolishPythonParser.Dict_literalContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by PolishPythonParser#dict_entry.
+    def visitDict_entry(self, ctx:PolishPythonParser.Dict_entryContext):
         return self.visitChildren(ctx)
 
 

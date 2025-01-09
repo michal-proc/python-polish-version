@@ -7,6 +7,9 @@ from translations.builtin_functions import BUILTIN_FUNCTIONS
 
 class PolishPythonTranslator(PolishPythonVisitor):
 
+    def __init__(self, parser):
+        self.parser = parser
+
     def visitProgram(self, ctx: PolishPythonParser.ProgramContext):
         output_lines = []
         for statement in ctx.statement():
@@ -66,6 +69,38 @@ class PolishPythonTranslator(PolishPythonVisitor):
         code += self.visit(ctx.statement_block())
         return code
 
+    def visitImport_statement(self, ctx: PolishPythonParser.Import_statementContext):
+        if ctx.import_direct():
+            return self.visit(ctx.import_direct())
+        elif ctx.import_from():
+            return self.visit(ctx.import_from())
+        return ""
+
+    def visitImport_direct(self, ctx: PolishPythonParser.Import_directContext):
+        import_specs = [self.visit(spec) for spec in ctx.import_spec()]
+        imports = ", ".join(import_specs)
+        return f"import {imports}"
+
+    def visitImport_from(self, ctx: PolishPythonParser.Import_fromContext):
+        module = self.visit(ctx.import_statement_after_from())
+        import_specs = [self.visit(spec) for spec in ctx.import_spec()]
+        imports = ", ".join(import_specs)
+        return f"from {module} import {imports}"
+
+    def visitImport_spec(self, ctx: PolishPythonParser.Import_specContext):
+        name = self.visit(ctx.dotted_name())
+        if ctx.alias_name():
+            alias = self.visit(ctx.alias_name())
+            return f"{name} as {alias}"
+        return name
+
+    def visitDotted_name(self, ctx: PolishPythonParser.Dotted_nameContext):
+        identifiers = ctx.IDENTIFIER()
+        return ".".join([id.getText() for id in identifiers])
+
+    def visitAlias_name(self, ctx: PolishPythonParser.Alias_nameContext):
+        return ctx.IDENTIFIER().getText()
+
     def visitSecond_part_statement(self, ctx: PolishPythonParser.Second_part_statementContext):
         if ctx.IS():
             return f"== {self.visit(ctx.expr_after_is())}"
@@ -93,6 +128,10 @@ class PolishPythonTranslator(PolishPythonVisitor):
     def visitReturn_statement(self, ctx: PolishPythonParser.Return_statementContext):
         value = self.visit(ctx.expression())
         return f"return {value}"
+
+    def visitYield_statement(self, ctx: PolishPythonParser.Yield_statementContext):
+        expr = self.visit(ctx.expression())
+        return f"yield {expr}\n"
 
     def visitBreak_statement(self, ctx: PolishPythonParser.Break_statementContext):
         return f"break"
@@ -226,7 +265,33 @@ class PolishPythonTranslator(PolishPythonVisitor):
             return ctx.FSTRING().getText()
         elif ctx.bool_expr():
             return self.visit(ctx.bool_expr())
+        elif ctx.list_literal():
+            return self.visit(ctx.list_literal())
+        elif ctx.dict_literal():
+            return self.visit(ctx.dict_literal())
         return ""
+
+    def visitList_literal(self, ctx: PolishPythonParser.List_literalContext):
+        print("x")
+        elements = []
+        if ctx.expression():
+            elements = [self.visit(expr) for expr in ctx.expression()]
+        elements_str = ", ".join(elements)
+        if ctx.LPAREN():
+            return f"({elements_str})"
+        return f"[{elements_str}]"
+
+    def visitDict_literal(self, ctx: PolishPythonParser.Dict_literalContext):
+        entries = []
+        if ctx.dict_entry():
+            entries = [self.visit(entry) for entry in ctx.dict_entry()]
+        entries_str = ", ".join(entries)
+        return f"{{{entries_str}}}"
+
+    def visitDict_entry(self, ctx: PolishPythonParser.Dict_entryContext):
+        key = self.visit(ctx.expression(0))
+        value = self.visit(ctx.expression(1))
+        return f"{key}: {value}"
 
     def visitWs(self, ctx):
         return ctx.getText()

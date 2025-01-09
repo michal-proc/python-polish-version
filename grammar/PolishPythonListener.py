@@ -71,6 +71,69 @@ class PolishPythonListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by PolishPythonParser#import_statement.
+    def enterImport_statement(self, ctx:PolishPythonParser.Import_statementContext):
+        pass
+
+    # Exit a parse tree produced by PolishPythonParser#import_statement.
+    def exitImport_statement(self, ctx:PolishPythonParser.Import_statementContext):
+        pass
+
+
+    # Enter a parse tree produced by PolishPythonParser#import_direct.
+    def enterImport_direct(self, ctx:PolishPythonParser.Import_directContext):
+        pass
+
+    # Exit a parse tree produced by PolishPythonParser#import_direct.
+    def exitImport_direct(self, ctx:PolishPythonParser.Import_directContext):
+        pass
+
+
+    # Enter a parse tree produced by PolishPythonParser#import_from.
+    def enterImport_from(self, ctx:PolishPythonParser.Import_fromContext):
+        pass
+
+    # Exit a parse tree produced by PolishPythonParser#import_from.
+    def exitImport_from(self, ctx:PolishPythonParser.Import_fromContext):
+        pass
+
+
+    # Enter a parse tree produced by PolishPythonParser#import_statement_after_from.
+    def enterImport_statement_after_from(self, ctx:PolishPythonParser.Import_statement_after_fromContext):
+        pass
+
+    # Exit a parse tree produced by PolishPythonParser#import_statement_after_from.
+    def exitImport_statement_after_from(self, ctx:PolishPythonParser.Import_statement_after_fromContext):
+        pass
+
+
+    # Enter a parse tree produced by PolishPythonParser#import_spec.
+    def enterImport_spec(self, ctx:PolishPythonParser.Import_specContext):
+        pass
+
+    # Exit a parse tree produced by PolishPythonParser#import_spec.
+    def exitImport_spec(self, ctx:PolishPythonParser.Import_specContext):
+        pass
+
+
+    # Enter a parse tree produced by PolishPythonParser#dotted_name.
+    def enterDotted_name(self, ctx:PolishPythonParser.Dotted_nameContext):
+        pass
+
+    # Exit a parse tree produced by PolishPythonParser#dotted_name.
+    def exitDotted_name(self, ctx:PolishPythonParser.Dotted_nameContext):
+        pass
+
+
+    # Enter a parse tree produced by PolishPythonParser#alias_name.
+    def enterAlias_name(self, ctx:PolishPythonParser.Alias_nameContext):
+        pass
+
+    # Exit a parse tree produced by PolishPythonParser#alias_name.
+    def exitAlias_name(self, ctx:PolishPythonParser.Alias_nameContext):
+        pass
+
+
     # Enter a parse tree produced by PolishPythonParser#second_part_statement.
     def enterSecond_part_statement(self, ctx:PolishPythonParser.Second_part_statementContext):
         pass
@@ -104,6 +167,15 @@ class PolishPythonListener(ParseTreeListener):
 
     # Exit a parse tree produced by PolishPythonParser#return_statement.
     def exitReturn_statement(self, ctx:PolishPythonParser.Return_statementContext):
+        pass
+
+
+    # Enter a parse tree produced by PolishPythonParser#yield_statement.
+    def enterYield_statement(self, ctx:PolishPythonParser.Yield_statementContext):
+        pass
+
+    # Exit a parse tree produced by PolishPythonParser#yield_statement.
+    def exitYield_statement(self, ctx:PolishPythonParser.Yield_statementContext):
         pass
 
 
@@ -293,6 +365,33 @@ class PolishPythonListener(ParseTreeListener):
 
     # Exit a parse tree produced by PolishPythonParser#primary_expr.
     def exitPrimary_expr(self, ctx:PolishPythonParser.Primary_exprContext):
+        pass
+
+
+    # Enter a parse tree produced by PolishPythonParser#list_literal.
+    def enterList_literal(self, ctx:PolishPythonParser.List_literalContext):
+        pass
+
+    # Exit a parse tree produced by PolishPythonParser#list_literal.
+    def exitList_literal(self, ctx:PolishPythonParser.List_literalContext):
+        pass
+
+
+    # Enter a parse tree produced by PolishPythonParser#dict_literal.
+    def enterDict_literal(self, ctx:PolishPythonParser.Dict_literalContext):
+        pass
+
+    # Exit a parse tree produced by PolishPythonParser#dict_literal.
+    def exitDict_literal(self, ctx:PolishPythonParser.Dict_literalContext):
+        pass
+
+
+    # Enter a parse tree produced by PolishPythonParser#dict_entry.
+    def enterDict_entry(self, ctx:PolishPythonParser.Dict_entryContext):
+        pass
+
+    # Exit a parse tree produced by PolishPythonParser#dict_entry.
+    def exitDict_entry(self, ctx:PolishPythonParser.Dict_entryContext):
         pass
 
 

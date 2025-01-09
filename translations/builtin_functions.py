@@ -22,7 +22,7 @@ BUILTIN_FUNCTIONS = {
     'katalog': 'dir',
     'iloraz_i_reszta': 'divmod',
     'wylicz': 'enumerate',
-    'ocen': 'eval',
+    'oceń': 'eval',
     'wykonaj': 'exec',
     'wyjdź': 'exit',
     'filtruj': 'filter',
