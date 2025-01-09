@@ -3,6 +3,8 @@ from grammar.PolishPythonParser import PolishPythonParser
 from translations.bool import BOOL
 from translations.bool_var import BOOL_VAR
 from translations.builtin_functions import BUILTIN_FUNCTIONS
+from translations.operators import OPERATORS
+from translations.typing import TYPING
 
 
 class PolishPythonTranslator(PolishPythonVisitor):
@@ -24,6 +26,16 @@ class PolishPythonTranslator(PolishPythonVisitor):
         return f"{var_name} = {value}"
 
     def visitIdentifier_with_built_in(self, ctx: PolishPythonParser.Identifier_with_built_inContext):
+        return ctx.getText()
+
+    def visitIdentifier_with_built_in_and_typing(self, ctx: PolishPythonParser.Identifier_with_built_in_and_typingContext):
+        if ctx.typing_object_name():
+            return TYPING.get(ctx.getText())
+        return ctx.getText()
+
+    def visitIdentifier_with_built_in_and_typing_var(self, ctx: PolishPythonParser.Identifier_with_built_in_and_typing_varContext):
+        if ctx.typing_object_name_var():
+            return TYPING.get(ctx.getText())
         return ctx.getText()
 
     def visitIf_statement(self, ctx: PolishPythonParser.If_statementContext):
@@ -119,11 +131,18 @@ class PolishPythonTranslator(PolishPythonVisitor):
 
     def visitFunction_def(self, ctx: PolishPythonParser.Function_defContext):
         func_name = ctx.identifier_with_built_in().getText()
-        params = ctx.parameter_list().identifier_with_built_in()
-        param_names = ", ".join([param.getText() for param in params]) if params else ""
-        code = f"def {func_name}({param_names}):"
+        params = ctx.function_parameter_list().function_parameter()
+        param_names = ", ".join([self.visit(param) for param in params]) if params else ""
+        code = f"def {func_name}({param_names})"
+        if ctx.ARROW():
+            code += f" -> {self.visit(ctx.identifier_with_built_in_and_typing_var())}"
+        code += ":"
         code += self.visit(ctx.statement_block())
         return code
+
+    def visitFunction_parameter(self, ctx: PolishPythonParser.Function_parameterContext):
+        type = self.visit(ctx.identifier_with_built_in_and_typing())
+        return f"{ctx.identifier_with_built_in().getText()}: {type}"
 
     def visitReturn_statement(self, ctx: PolishPythonParser.Return_statementContext):
         value = self.visit(ctx.expression())
@@ -213,7 +232,7 @@ class PolishPythonTranslator(PolishPythonVisitor):
         for i in range(1, len(ctx.additive_expr())):
             operator = ctx.getChild(2 * i - 1).getText()
             right = self.visit(ctx.additive_expr(i))
-            expr = f"{expr} {operator} {right}"
+            expr = f"{expr} {OPERATORS.get(operator)} {right}"
         return expr
 
     def visitAdditive_expr(self, ctx: PolishPythonParser.Additive_exprContext):
@@ -272,7 +291,6 @@ class PolishPythonTranslator(PolishPythonVisitor):
         return ""
 
     def visitList_literal(self, ctx: PolishPythonParser.List_literalContext):
-        print("x")
         elements = []
         if ctx.expression():
             elements = [self.visit(expr) for expr in ctx.expression()]

@@ -30,13 +30,13 @@ MULT: '*';
 DIV: '/';
 MOD: '%';
 POW_OP: '**';
-LT: '<';
-GT: '>';
-LE: '<=';
-GE: '>=';
-EQ: '==';
-NEQ: '!=';
-ARROW: '->';
+LT: 'mniejsze_niż';
+GT: 'większe_niż';
+LE: 'mniejsze_lub_równe';
+GE: 'większe_lub_równe';
+EQ: 'równe';
+NEQ: 'nierówne';
+ARROW: 'zwraca';
 
 // Python keyword translations
 IF: 'jeśli';
@@ -46,8 +46,7 @@ WHILE: 'dopóki';
 FOR: 'dla';
 IN: 'w';
 IS: 'jest';
-DEF: 'definiuj';
-DEL: 'usuń';
+DEF: 'funkcja';
 RETURN: 'zwróć';
 BREAK: 'przerwij';
 CONTINUE: 'kontynuuj';
@@ -145,6 +144,19 @@ TYPE: 'typ';
 VARS: 'zmienne';
 ZIP: 'sparuj';
 
+// Typing translations and built-in types
+LIBRARY_TYPING: 'typing';
+
+TYPING_SEQUENCE: 'Sekwencja';
+TYPING_UNION: 'Unia';
+TYPING_CALLABLE: 'Wywoływalny';
+TYPING_ANY: 'Dowolny';
+
+TYPING_SEQUENCE_VAR: 'Sekwencję';
+TYPING_UNION_VAR: 'Unię';
+TYPING_CALLABLE_VAR: 'Wywoływalne';
+TYPING_ANY_VAR: 'Dowolne';
+
 // Identifiers
 NUMBER: '-'? [0-9]+ ('.' [0-9]+)? ([eE][+-]?[0-9]+)? | '0b' [01]+ | '0o' [0-7]+ | '0x' [0-9a-fA-F]+;
 STRING: '"' ( ~["\\] | '\\' . )* '"' | '\'' ( ~['\\] | '\\' . )* '\'';
@@ -182,8 +194,20 @@ assignment
     ;
 
 identifier_with_built_in
-    : IDENTIFIER
-    | built_in_func_name
+    : built_in_func_name
+    | IDENTIFIER
+    ;
+
+identifier_with_built_in_and_typing
+    : built_in_func_name
+    | typing_object_name
+    | IDENTIFIER
+    ;
+
+identifier_with_built_in_and_typing_var
+    : built_in_func_name
+    | typing_object_name_var
+    | IDENTIFIER
     ;
 
 if_statement
@@ -210,11 +234,17 @@ import_direct
     ;
 
 import_from
-    : FROM import_statement_after_from IMPORT import_spec (COMMA import_spec)*
+    : FROM LIBRARY_TYPING IMPORT import_spec_with_typing (COMMA import_spec_with_typing)*
+    | FROM import_statement_after_from IMPORT import_spec (COMMA import_spec)*
     ;
 
 import_statement_after_from
     : dotted_name
+    ;
+
+import_spec_with_typing
+    : typing_object_name
+    | import_spec
     ;
 
 import_spec
@@ -240,7 +270,15 @@ second_part_statement
     ;
 
 function_def
-    : DEF identifier_with_built_in LPAREN parameter_list? RPAREN COLON statement_block
+    : DEF identifier_with_built_in LPAREN function_parameter_list? RPAREN (ARROW identifier_with_built_in_and_typing_var)? COLON statement_block
+    ;
+
+function_parameter_list
+    : function_parameter (COMMA function_parameter)*
+    ;
+
+function_parameter
+    : identifier_with_built_in (COLON identifier_with_built_in_and_typing)?
     ;
 
 parameter_list
@@ -265,6 +303,20 @@ continue_statement
 
 pass_statement
     : PASS
+    ;
+
+typing_object_name
+    : TYPING_SEQUENCE
+    | TYPING_UNION
+    | TYPING_CALLABLE
+    | TYPING_ANY
+    ;
+
+typing_object_name_var
+    : TYPING_SEQUENCE_VAR
+    | TYPING_UNION_VAR
+    | TYPING_CALLABLE_VAR
+    | TYPING_ANY_VAR
     ;
 
 built_in_func_name

@@ -29,6 +29,16 @@ class PolishPythonVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by PolishPythonParser#identifier_with_built_in_and_typing.
+    def visitIdentifier_with_built_in_and_typing(self, ctx:PolishPythonParser.Identifier_with_built_in_and_typingContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by PolishPythonParser#identifier_with_built_in_and_typing_var.
+    def visitIdentifier_with_built_in_and_typing_var(self, ctx:PolishPythonParser.Identifier_with_built_in_and_typing_varContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by PolishPythonParser#if_statement.
     def visitIf_statement(self, ctx:PolishPythonParser.If_statementContext):
         return self.visitChildren(ctx)
@@ -64,6 +74,11 @@ class PolishPythonVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by PolishPythonParser#import_spec_with_typing.
+    def visitImport_spec_with_typing(self, ctx:PolishPythonParser.Import_spec_with_typingContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by PolishPythonParser#import_spec.
     def visitImport_spec(self, ctx:PolishPythonParser.Import_specContext):
         return self.visitChildren(ctx)
@@ -86,6 +101,16 @@ class PolishPythonVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by PolishPythonParser#function_def.
     def visitFunction_def(self, ctx:PolishPythonParser.Function_defContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by PolishPythonParser#function_parameter_list.
+    def visitFunction_parameter_list(self, ctx:PolishPythonParser.Function_parameter_listContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by PolishPythonParser#function_parameter.
+    def visitFunction_parameter(self, ctx:PolishPythonParser.Function_parameterContext):
         return self.visitChildren(ctx)
 
 
@@ -116,6 +141,16 @@ class PolishPythonVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by PolishPythonParser#pass_statement.
     def visitPass_statement(self, ctx:PolishPythonParser.Pass_statementContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by PolishPythonParser#typing_object_name.
+    def visitTyping_object_name(self, ctx:PolishPythonParser.Typing_object_nameContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by PolishPythonParser#typing_object_name_var.
+    def visitTyping_object_name_var(self, ctx:PolishPythonParser.Typing_object_name_varContext):
         return self.visitChildren(ctx)
 
 

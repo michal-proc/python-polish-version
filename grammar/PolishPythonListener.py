@@ -44,6 +44,24 @@ class PolishPythonListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by PolishPythonParser#identifier_with_built_in_and_typing.
+    def enterIdentifier_with_built_in_and_typing(self, ctx:PolishPythonParser.Identifier_with_built_in_and_typingContext):
+        pass
+
+    # Exit a parse tree produced by PolishPythonParser#identifier_with_built_in_and_typing.
+    def exitIdentifier_with_built_in_and_typing(self, ctx:PolishPythonParser.Identifier_with_built_in_and_typingContext):
+        pass
+
+
+    # Enter a parse tree produced by PolishPythonParser#identifier_with_built_in_and_typing_var.
+    def enterIdentifier_with_built_in_and_typing_var(self, ctx:PolishPythonParser.Identifier_with_built_in_and_typing_varContext):
+        pass
+
+    # Exit a parse tree produced by PolishPythonParser#identifier_with_built_in_and_typing_var.
+    def exitIdentifier_with_built_in_and_typing_var(self, ctx:PolishPythonParser.Identifier_with_built_in_and_typing_varContext):
+        pass
+
+
     # Enter a parse tree produced by PolishPythonParser#if_statement.
     def enterIf_statement(self, ctx:PolishPythonParser.If_statementContext):
         pass
@@ -107,6 +125,15 @@ class PolishPythonListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by PolishPythonParser#import_spec_with_typing.
+    def enterImport_spec_with_typing(self, ctx:PolishPythonParser.Import_spec_with_typingContext):
+        pass
+
+    # Exit a parse tree produced by PolishPythonParser#import_spec_with_typing.
+    def exitImport_spec_with_typing(self, ctx:PolishPythonParser.Import_spec_with_typingContext):
+        pass
+
+
     # Enter a parse tree produced by PolishPythonParser#import_spec.
     def enterImport_spec(self, ctx:PolishPythonParser.Import_specContext):
         pass
@@ -149,6 +176,24 @@ class PolishPythonListener(ParseTreeListener):
 
     # Exit a parse tree produced by PolishPythonParser#function_def.
     def exitFunction_def(self, ctx:PolishPythonParser.Function_defContext):
+        pass
+
+
+    # Enter a parse tree produced by PolishPythonParser#function_parameter_list.
+    def enterFunction_parameter_list(self, ctx:PolishPythonParser.Function_parameter_listContext):
+        pass
+
+    # Exit a parse tree produced by PolishPythonParser#function_parameter_list.
+    def exitFunction_parameter_list(self, ctx:PolishPythonParser.Function_parameter_listContext):
+        pass
+
+
+    # Enter a parse tree produced by PolishPythonParser#function_parameter.
+    def enterFunction_parameter(self, ctx:PolishPythonParser.Function_parameterContext):
+        pass
+
+    # Exit a parse tree produced by PolishPythonParser#function_parameter.
+    def exitFunction_parameter(self, ctx:PolishPythonParser.Function_parameterContext):
         pass
 
 
@@ -203,6 +248,24 @@ class PolishPythonListener(ParseTreeListener):
 
     # Exit a parse tree produced by PolishPythonParser#pass_statement.
     def exitPass_statement(self, ctx:PolishPythonParser.Pass_statementContext):
+        pass
+
+
+    # Enter a parse tree produced by PolishPythonParser#typing_object_name.
+    def enterTyping_object_name(self, ctx:PolishPythonParser.Typing_object_nameContext):
+        pass
+
+    # Exit a parse tree produced by PolishPythonParser#typing_object_name.
+    def exitTyping_object_name(self, ctx:PolishPythonParser.Typing_object_nameContext):
+        pass
+
+
+    # Enter a parse tree produced by PolishPythonParser#typing_object_name_var.
+    def enterTyping_object_name_var(self, ctx:PolishPythonParser.Typing_object_name_varContext):
+        pass
+
+    # Exit a parse tree produced by PolishPythonParser#typing_object_name_var.
+    def exitTyping_object_name_var(self, ctx:PolishPythonParser.Typing_object_name_varContext):
         pass
 
 

@@ -1,0 +1,6 @@
+funkcja znajdz_maksimum(lista: Unia) zwraca Sekwencję:
+    maksimum = 0
+    dla element w lista:
+        jeśli element większe_niż maksimum:
+            maksimum = element
+    zwróć maksimum

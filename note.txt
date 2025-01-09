@@ -1,8 +1,0 @@
-// Python built-in Exceptions, Warnings, Errors translations
-// TODO
-
-// Python built-in '__' methods translations
-// TODO
-
-// Others built-ins translations
-// TODO
