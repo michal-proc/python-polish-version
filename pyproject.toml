@@ -1,13 +1,14 @@
 [tool.poetry]
 name = "python-polish-version"
 version = "1.0.0"
-description = "Translator from polish version of Python to Python 3.11"
+description = "Translator from polish version of Python to Python 3.13"
 authors = ["Michał Proć <michalproc4@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.13"
+python = "^3.12"
 antlr4-python3-runtime = "^4.13"
+pyyml = "^0.0.2"
 
 
 [build-system]

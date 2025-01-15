@@ -5,6 +5,7 @@ from translations.bool_var import BOOL_VAR
 from translations.builtin_functions import BUILTIN_FUNCTIONS
 from translations.operators import OPERATORS
 from translations.typing import TYPING
+from translators.translator_helper import TranslatorHelper
 
 
 class PolishPythonTranslator(PolishPythonVisitor):
@@ -21,22 +22,24 @@ class PolishPythonTranslator(PolishPythonVisitor):
         return "".join(output_lines)
 
     def visitAssignment(self, ctx: PolishPythonParser.AssignmentContext):
-        var_name = ctx.identifier_with_built_in().getText()
+        var_name = TranslatorHelper.translate_identifier(ctx.identifier_with_built_in().getText())
         value = self.visit(ctx.expression())
         return f"{var_name} = {value}"
 
     def visitIdentifier_with_built_in(self, ctx: PolishPythonParser.Identifier_with_built_inContext):
-        return ctx.getText()
+        return TranslatorHelper.translate_identifier(ctx.getText())
 
-    def visitIdentifier_with_built_in_and_typing(self, ctx: PolishPythonParser.Identifier_with_built_in_and_typingContext):
+    def visitIdentifier_with_built_in_and_typing(self,
+                                                 ctx: PolishPythonParser.Identifier_with_built_in_and_typingContext):
         if ctx.typing_object_name():
             return TYPING.get(ctx.getText())
-        return ctx.getText()
+        return TranslatorHelper.translate_identifier(ctx.getText())
 
-    def visitIdentifier_with_built_in_and_typing_var(self, ctx: PolishPythonParser.Identifier_with_built_in_and_typing_varContext):
+    def visitIdentifier_with_built_in_and_typing_var(self,
+                                                     ctx: PolishPythonParser.Identifier_with_built_in_and_typing_varContext):
         if ctx.typing_object_name_var():
             return TYPING.get(ctx.getText())
-        return ctx.getText()
+        return TranslatorHelper.translate_identifier(ctx.getText())
 
     def visitIf_statement(self, ctx: PolishPythonParser.If_statementContext):
         code = ""
@@ -75,7 +78,8 @@ class PolishPythonTranslator(PolishPythonVisitor):
 
     def visitFor_statement(self, ctx: PolishPythonParser.For_statementContext):
         # Parse the parameters in the for loop
-        parameters = ", ".join([param.getText() for param in ctx.parameter_list().identifier_with_built_in()])
+        parameters = ", ".join([TranslatorHelper.translate_identifier(param.getText()) for param in
+                                ctx.parameter_list().identifier_with_built_in()])
         iterable = self.visit(ctx.expression())
         code = f"for {parameters} in {iterable}:"
         code += self.visit(ctx.statement_block())
@@ -108,10 +112,10 @@ class PolishPythonTranslator(PolishPythonVisitor):
 
     def visitDotted_name(self, ctx: PolishPythonParser.Dotted_nameContext):
         identifiers = ctx.IDENTIFIER()
-        return ".".join([id.getText() for id in identifiers])
+        return ".".join([TranslatorHelper.translate_identifier(id.getText()) for id in identifiers])
 
     def visitAlias_name(self, ctx: PolishPythonParser.Alias_nameContext):
-        return ctx.IDENTIFIER().getText()
+        return TranslatorHelper.translate_identifier(ctx.IDENTIFIER().getText())
 
     def visitSecond_part_statement(self, ctx: PolishPythonParser.Second_part_statementContext):
         if ctx.IS():
@@ -130,7 +134,7 @@ class PolishPythonTranslator(PolishPythonVisitor):
             return f"!= {self.visit(ctx.expression())}"
 
     def visitFunction_def(self, ctx: PolishPythonParser.Function_defContext):
-        func_name = ctx.identifier_with_built_in().getText()
+        func_name = TranslatorHelper.translate_identifier(ctx.identifier_with_built_in().getText())
         params = ctx.function_parameter_list().function_parameter()
         param_names = ", ".join([self.visit(param) for param in params]) if params else ""
         code = f"def {func_name}({param_names})"
@@ -142,7 +146,7 @@ class PolishPythonTranslator(PolishPythonVisitor):
 
     def visitFunction_parameter(self, ctx: PolishPythonParser.Function_parameterContext):
         type = self.visit(ctx.identifier_with_built_in_and_typing())
-        return f"{ctx.identifier_with_built_in().getText()}: {type}"
+        return f"{self.visit(ctx.identifier_with_built_in())}: {type}"
 
     def visitReturn_statement(self, ctx: PolishPythonParser.Return_statementContext):
         value = self.visit(ctx.expression())
@@ -196,7 +200,7 @@ class PolishPythonTranslator(PolishPythonVisitor):
 
     def visitExpr_after_is(self, ctx: PolishPythonParser.Expr_after_isContext):
         if ctx.identifier_with_built_in():
-            return ctx.identifier_with_built_in().getText()
+            return TranslatorHelper.translate_identifier(ctx.identifier_with_built_in().getText())
         elif ctx.NUMBER():
             return ctx.NUMBER().getText()
         else:
@@ -275,7 +279,7 @@ class PolishPythonTranslator(PolishPythonVisitor):
         elif ctx.expression():
             return f"({self.visit(ctx.expression())})"
         elif ctx.identifier_with_built_in():
-            return ctx.identifier_with_built_in().getText()
+            return TranslatorHelper.translate_identifier(ctx.identifier_with_built_in().getText())
         elif ctx.NUMBER():
             return ctx.NUMBER().getText()
         elif ctx.STRING():

@@ -1,0 +1,5 @@
+# Here you can put custom translations from polish python code
+# to their English translations in generated/translated Python code
+
+zmienna: variable
+lista: array
