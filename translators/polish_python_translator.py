@@ -98,14 +98,30 @@ class PolishPythonTranslator(PolishPythonVisitor):
         return f"import {imports}"
 
     def visitImport_from(self, ctx: PolishPythonParser.Import_fromContext):
-        module = self.visit(ctx.import_statement_after_from())
-        import_specs = [self.visit(spec) for spec in ctx.import_spec()]
-        imports = ", ".join(import_specs)
+        if ctx.LIBRARY_TYPING():
+            module = "typing"
+            import_specs = [self.visit(spec) for spec in ctx.import_spec_with_typing()]
+            imports = ", ".join(import_specs)
+        else:
+            module = self.visit(ctx.import_statement_after_from())
+            import_specs = [self.visit(spec) for spec in ctx.import_spec()]
+            imports = ", ".join(import_specs)
         return f"from {module} import {imports}"
 
+    def visitImport_spec_with_typing(self, ctx: PolishPythonParser.Import_spec_with_typingContext):
+        if ctx.AS():
+            alias = self.visit(ctx.alias_name())
+            additional_text = f" as {alias}"
+        if ctx.typing_object_name():
+            return TYPING.get(ctx.typing_object_name().getText())
+        return self.visit(ctx.import_spec())
+
     def visitImport_spec(self, ctx: PolishPythonParser.Import_specContext):
-        name = self.visit(ctx.dotted_name())
-        if ctx.alias_name():
+        if ctx.typing_object_name():
+            name = ctx.typing_object_name().getText()
+        else:
+            name = self.visit(ctx.dotted_name())
+        if ctx.AS():
             alias = self.visit(ctx.alias_name())
             return f"{name} as {alias}"
         return name

@@ -1,6 +1,9 @@
+z typowanie sprowadź Unia, Sekwencja
+
+
 funkcja znajdz_maksimum(lista: Unia) zwraca Sekwencję:
     zmienna = 0
     dla element w lista:
-        jeśli element większe_niż maksimum:
+        jeśli element większe_niż zmienna:
             zmienna = element
     zwróć zmienna

@@ -145,7 +145,7 @@ VARS: 'zmienne';
 ZIP: 'sparuj';
 
 // Typing translations and built-in types
-LIBRARY_TYPING: 'typing';
+LIBRARY_TYPING: 'typowanie';
 
 TYPING_SEQUENCE: 'Sekwencja';
 TYPING_UNION: 'Unia';
@@ -239,16 +239,17 @@ import_from
     ;
 
 import_statement_after_from
-    : dotted_name
+    : import_spec
     ;
 
 import_spec_with_typing
-    : typing_object_name
+    : typing_object_name (AS alias_name)?
     | import_spec
     ;
 
 import_spec
-    : dotted_name (AS alias_name)?
+    : typing_object_name (AS alias_name)?
+    | dotted_name (AS alias_name)?
     ;
 
 dotted_name
