@@ -1,0 +1,12 @@
+lista_liczb = [1, 2, 3, 4, 5]
+wynik = Fałsz
+
+dla liczba w lista_liczb:
+    jeśli (liczba większe_niż 3 i liczba mniejsze_niż 5) lub liczba równe 5:
+        wynik = Prawda
+    pomiń
+
+jeśli wynik jest Prawdą:
+    wypisz("Znaleziono liczbę spełniającą warunki!")
+inaczej:
+    wypisz("Żadna liczba nie spełnia warunków.")

@@ -1,0 +1,8 @@
+funkcja maksimum(a, b=0):
+    jeśli a większe_niż b:
+        zwróć a
+    inaczej:
+        zwróć b
+
+
+maksimum(1)

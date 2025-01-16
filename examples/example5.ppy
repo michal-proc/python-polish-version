@@ -1,0 +1,19 @@
+moj_slownik = {"jeden": 1,"dwa": 2}
+moja_tablica = [1,2,3,4]
+moj_string = "Cześć świecie!"
+moje_imie = 'Ala'
+moja_liczba_calkowita = 2023
+moja_liczba_zmiennoprzecinkowa = 3.14
+moj_boole_prawda = Prawda
+moj_boole_falsz = Fałsz
+moj_none = Nic
+
+wypisz(moj_slownik)
+wypisz(moja_tablica)
+wypisz(moj_string)
+wypisz(moje_imie)
+wypisz(moja_liczba_calkowita)
+wypisz(moja_liczba_zmiennoprzecinkowa)
+wypisz(moj_boole_prawda)
+wypisz(moj_boole_falsz)
+wypisz(moj_none)

@@ -1,0 +1,19 @@
+zmienna = 0
+
+dopóki zmienna mniejsze_niż 10:
+    zmienna = zmienna + 1
+
+    jeśli zmienna równe 5:
+        kontynuuj
+
+    jeśli zmienna większe_niż 7:
+        przerwij
+    inaczej:
+        wypisz(zmienna)
+
+jeśli zmienna mniejsze_lub_równe 7:
+    wypisz("Koniec pętli przy zmiennej mniejszej_lub_równej 7")
+jeśli_inaczej zmienna równe 8:
+    wypisz("Pętla zakończona, bo zmienna wynosi 8")
+inaczej:
+    wypisz("Pętla zakończona, inna wartość zmiennej")

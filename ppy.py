@@ -6,7 +6,7 @@ from parsers.polish_python_parser import parse_polish_python
 if __name__ == "__main__":
     command_parser = argparse.ArgumentParser(description="")
 
-    command_parser.add_argument("--file", default="examples/example.ppy", help="Path to the input file (required).")
+    command_parser.add_argument("--file", default="examples/example6.ppy", help="Path to the input file (required).")
     command_parser.add_argument("--output", default="./output", help="Path to the output file (optional).")
     command_parser.add_argument("--run", action="store_true", help="Flag to execute the program.")
 

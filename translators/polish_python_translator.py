@@ -135,8 +135,9 @@ class PolishPythonTranslator(PolishPythonVisitor):
         return TranslatorHelper.translate_identifier(ctx.IDENTIFIER().getText())
 
     def visitSecond_part_statement(self, ctx: PolishPythonParser.Second_part_statementContext):
+        print(ctx.getText())
         if ctx.IS():
-            return f"== {self.visit(ctx.expr_after_is())}"
+            return f"is {self.visit(ctx.expr_after_is())}"
         elif ctx.EQUAL():
             return f"= {self.visit(ctx.expression())}"
         elif ctx.LT():
@@ -147,6 +148,8 @@ class PolishPythonTranslator(PolishPythonVisitor):
             return f"<= {self.visit(ctx.expression())}"
         elif ctx.GE():
             return f">= {self.visit(ctx.expression())}"
+        elif ctx.EQ():
+            return f"== {self.visit(ctx.expression())}"
         elif ctx.NEQ():
             return f"!= {self.visit(ctx.expression())}"
 
@@ -162,10 +165,13 @@ class PolishPythonTranslator(PolishPythonVisitor):
         return code
 
     def visitFunction_parameter(self, ctx: PolishPythonParser.Function_parameterContext):
+        additional_value = ""
+        if ctx.EQUAL():
+            additional_value = f"={self.visit(ctx.expression())}"
         if ctx.identifier_with_built_in_and_typing():
             type = self.visit(ctx.identifier_with_built_in_and_typing())
-            return f"{self.visit(ctx.identifier_with_built_in())}: {type}"
-        return self.visit(ctx.identifier_with_built_in())
+            return f"{self.visit(ctx.identifier_with_built_in())}: {type}" + additional_value
+        return self.visit(ctx.identifier_with_built_in()) + additional_value
 
     def visitReturn_statement(self, ctx: PolishPythonParser.Return_statementContext):
         value = self.visit(ctx.expression())
@@ -260,7 +266,7 @@ class PolishPythonTranslator(PolishPythonVisitor):
         for i in range(1, len(ctx.relational_expr())):
             operator = ctx.getChild(2 * i - 1).getText()
             right = self.visit(ctx.relational_expr(i))
-            expr = f"{expr} {operator} {right}"
+            expr = f"{expr} {OPERATORS.get(operator)} {right}"
         return expr
 
     def visitRelational_expr(self, ctx: PolishPythonParser.Relational_exprContext):

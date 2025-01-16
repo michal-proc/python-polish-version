@@ -267,6 +267,7 @@ second_part_statement
     | GT expression
     | LE expression
     | GE expression
+    | EQ expression
     | NEQ expression
     ;
 
@@ -279,7 +280,7 @@ function_parameter_list
     ;
 
 function_parameter
-    : identifier_with_built_in (COLON identifier_with_built_in_and_typing)?
+    : identifier_with_built_in (COLON identifier_with_built_in_and_typing)? (EQUAL expression)?
     ;
 
 parameter_list

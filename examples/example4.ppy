@@ -1,0 +1,12 @@
+z typowanie sprowadź Unia
+
+
+funkcja sprawdz_dane(dane: Unia):
+    jeśli dane jest Niczym:
+        wypisz("Dane nie zostały przekazane.")
+    inaczej:
+        wypisz(f"Otrzymano: {dane}")
+
+
+sprawdz_dane("Hello world!")
+sprawdz_dane(Nic)
