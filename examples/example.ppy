@@ -7,3 +7,6 @@ funkcja znajdz_maksimum(lista: Unia) zwraca Sekwencję:
         jeśli element większe_niż zmienna:
             zmienna = element
     zwróć zmienna
+
+
+wypisz("xxx")

@@ -109,12 +109,13 @@ class PolishPythonTranslator(PolishPythonVisitor):
         return f"from {module} import {imports}"
 
     def visitImport_spec_with_typing(self, ctx: PolishPythonParser.Import_spec_with_typingContext):
+        additional_text = ""
         if ctx.AS():
             alias = self.visit(ctx.alias_name())
             additional_text = f" as {alias}"
         if ctx.typing_object_name():
-            return TYPING.get(ctx.typing_object_name().getText())
-        return self.visit(ctx.import_spec())
+            return TYPING.get(ctx.typing_object_name().getText()) + additional_text
+        return self.visit(ctx.import_spec()) + additional_text
 
     def visitImport_spec(self, ctx: PolishPythonParser.Import_specContext):
         if ctx.typing_object_name():
