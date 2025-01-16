@@ -162,8 +162,10 @@ class PolishPythonTranslator(PolishPythonVisitor):
         return code
 
     def visitFunction_parameter(self, ctx: PolishPythonParser.Function_parameterContext):
-        type = self.visit(ctx.identifier_with_built_in_and_typing())
-        return f"{self.visit(ctx.identifier_with_built_in())}: {type}"
+        if ctx.identifier_with_built_in_and_typing():
+            type = self.visit(ctx.identifier_with_built_in_and_typing())
+            return f"{self.visit(ctx.identifier_with_built_in())}: {type}"
+        return self.visit(ctx.identifier_with_built_in())
 
     def visitReturn_statement(self, ctx: PolishPythonParser.Return_statementContext):
         value = self.visit(ctx.expression())
@@ -181,6 +183,15 @@ class PolishPythonTranslator(PolishPythonVisitor):
 
     def visitPass_statement(self, ctx: PolishPythonParser.Pass_statementContext):
         return f"pass"
+
+    def visitFunc_call(self, ctx: PolishPythonParser.Func_callContext):
+        func_name = ctx.IDENTIFIER().getText()
+        if ctx.argument_list():
+            args = [self.visit(arg) for arg in ctx.argument_list().expression()]
+            args_str = ", ".join(args)
+        else:
+            args_str = ""
+        return f"{func_name}({args_str})"
 
     def visitBuilt_in_func_call(self, ctx: PolishPythonParser.Built_in_func_callContext):
         func_name = self.visit(ctx.built_in_func_name())
@@ -224,6 +235,10 @@ class PolishPythonTranslator(PolishPythonVisitor):
             return self.visit(ctx.bool_expr_var())
 
     def visitExpression(self, ctx: PolishPythonParser.ExpressionContext):
+        if ctx.func_call():
+            return self.visit(ctx.func_call())
+        elif ctx.built_in_func_call():
+            return self.visit(ctx.built_in_func_call())
         return self.visit(ctx.logical_or_expr())
 
     def visitLogical_or_expr(self, ctx: PolishPythonParser.Logical_or_exprContext):

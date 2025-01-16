@@ -397,6 +397,10 @@ built_in_func_name
     | ZIP
     ;
 
+func_call
+    : IDENTIFIER LPAREN argument_list? RPAREN
+    ;
+
 built_in_func_call
     : built_in_func_name LPAREN argument_list? RPAREN
     ;
@@ -435,6 +439,8 @@ expr_after_is
 
 expression
     : logical_or_expr
+    | func_call
+    | built_in_func_call
     ;
 
 logical_or_expr

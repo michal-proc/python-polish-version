@@ -159,6 +159,11 @@ class PolishPythonVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by PolishPythonParser#func_call.
+    def visitFunc_call(self, ctx:PolishPythonParser.Func_callContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by PolishPythonParser#built_in_func_call.
     def visitBuilt_in_func_call(self, ctx:PolishPythonParser.Built_in_func_callContext):
         return self.visitChildren(ctx)

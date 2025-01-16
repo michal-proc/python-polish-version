@@ -278,6 +278,15 @@ class PolishPythonListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by PolishPythonParser#func_call.
+    def enterFunc_call(self, ctx:PolishPythonParser.Func_callContext):
+        pass
+
+    # Exit a parse tree produced by PolishPythonParser#func_call.
+    def exitFunc_call(self, ctx:PolishPythonParser.Func_callContext):
+        pass
+
+
     # Enter a parse tree produced by PolishPythonParser#built_in_func_call.
     def enterBuilt_in_func_call(self, ctx:PolishPythonParser.Built_in_func_callContext):
         pass

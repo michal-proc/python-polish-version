@@ -1,7 +1,7 @@
-z typowanie sprowadź Unia, Sekwencja
+z typowanie sprowadź Sekwencja jako s
 
 
-funkcja znajdz_maksimum(lista: Unia) zwraca Sekwencję:
+funkcja znajdz_maksimum(lista) zwraca s:
     zmienna = 0
     dla element w lista:
         jeśli element większe_niż zmienna:
@@ -9,4 +9,4 @@ funkcja znajdz_maksimum(lista: Unia) zwraca Sekwencję:
     zwróć zmienna
 
 
-wypisz("xxx")
+wypisz(znajdz_maksimum([1,2,3]))
