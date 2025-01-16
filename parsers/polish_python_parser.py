@@ -35,7 +35,8 @@ def parse_polish_python(file_path):
     flake8_errors = validate_code(python_code)
     if len(flake8_errors.get(TEMP_FILE_PATH)) > 0:
         for error in flake8_errors.get(TEMP_FILE_PATH):
-            logging.error(error.get("text"))
+            logging.error(
+                f"line:{error.get("line_number")}:column:{error.get("column_number")}:{error.get("text")}\n\t{error.get("physical_line")}")
         sleep(0.5)
         raise Exception(
             f"Parser can translate program, but validator detected issues. Validator found {len(flake8_errors.get(TEMP_FILE_PATH))} errors.")
