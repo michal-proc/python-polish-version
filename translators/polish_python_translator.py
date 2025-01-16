@@ -135,7 +135,6 @@ class PolishPythonTranslator(PolishPythonVisitor):
         return TranslatorHelper.translate_identifier(ctx.IDENTIFIER().getText())
 
     def visitSecond_part_statement(self, ctx: PolishPythonParser.Second_part_statementContext):
-        print(ctx.getText())
         if ctx.IS():
             return f"is {self.visit(ctx.expr_after_is())}"
         elif ctx.EQUAL():

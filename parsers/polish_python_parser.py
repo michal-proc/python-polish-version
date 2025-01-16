@@ -30,7 +30,6 @@ def parse_polish_python(file_path):
 
     translator = PolishPythonTranslator(parser)
     python_code = translator.visit(tree)
-    print(python_code)
 
     # Additional validation
     flake8_errors = validate_code(python_code)

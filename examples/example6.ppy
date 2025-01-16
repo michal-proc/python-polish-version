@@ -1,8 +1,9 @@
-funkcja maksimum(a, b=0):
+funkcja znajdz_maksa(a, b=0):
     jeśli a większe_niż b:
         zwróć a
     inaczej:
         zwróć b
 
 
-maksimum(1)
+maksimum = znajdz_maksa(1)
+print(maksimum)
